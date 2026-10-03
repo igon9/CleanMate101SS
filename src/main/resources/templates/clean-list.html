@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>洗剤一覧</title>
+<link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<!-- ------------新規登録へ---------------- -->
+<form th:action="@{/clean-show-regist}" method="POST">
+	<input type="submit" value="洗剤登録" class="btn">
+</form>
+
+<!-- ------------検索---------------- -->
+<h2>clean検索</h2>
+
+<form th:action="@{/clean-search-list}" method="POST"
+	th:object="${cleanSearchListForm}">
+<table class="condition-table">
+	<tr>
+		<th>【洗剤名】（部分一致）</th>
+		<th>【登録日】</th>
+		<th>【性質の種類】</th>
+	</tr>
+	<tr>
+		<td><input type="text" th:field="*{cleanName}"></td>
+		<td><input type="date" th:field="*{registDate}"> 以前</td>
+		<td>
+		   	<select th:field="*{typeCode}">
+				<option value="">(全て)</option>
+				<option th:each="type : ${typeList}"
+					th:value="${type.typeCode}"
+					th:text="${type.typeCode + ':' + type.typeName}"
+					th:selected="${type.typeCode == typeCode}" >
+				</option>
+			</select>
+		</td>
+	</tr>
+</table>
+   	<input type="submit" value="検索" class="btn">
+</form>
+
+<!-- ------------一覧---------------- -->
+<div th:if="${cleanSummaryList} != null">
+	<h2>clean一覧</h2>
+
+	<table class="clean-list">
+		<tr>
+			<th>cleanID</th><th>cleanName</th><th>登録日</th><th>type</th><th>説明数</th>
+		</tr>
+		<tr th:each="clean : ${cleanSummaryList}">
+			<td th:text="${clean.cleanId}"></td>
+			<td th:text="${clean.cleanName}"></td>
+			<td th:text="${clean.registDate}"></td>
+			<td th:text="${clean.type.typeCode+ ':' + clean.type.typeName}"></td>
+			<td th:text="${clean.memoCnt}"></td>
+		</tr>
+
+	</table>
+</div>
+
+</body>
+</html>

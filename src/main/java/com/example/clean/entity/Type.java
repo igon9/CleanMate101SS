@@ -1,0 +1,11 @@
+package com.example.clean.entity;
+
+import lombok.Data;
+
+@Data
+public class Type {
+	
+	private String typeCode;
+	private String typeName;
+
+}

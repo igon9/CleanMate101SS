@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.clean.repository.CleanRepository">
+
+	<!-- **************** 一覧全件検索 **************** -->
+	<!-- resultMap（１対１の関係を含む） -->
+	<resultMap  id="cleanList"
+			    type="com.example.clean.entity.CleanSummary">
+		<id     property="cleanId"    column="clean_id" />
+		<result property="cleanName"  column="clean_name" />
+		<result property="registDate" column="regist_date" />
+		<result property="memoCnt"    column="memo_cnt" />
+		<association property="type" javaType="com.example.clean.entity.Type">
+			<id      property="typeCode" column="type_code" />
+			<result  property="typeName" column="type_name" />
+		</association>
+	</resultMap>
+	<!-- 一覧検索 -->
+	<select id="selectListAll"
+			resultMap="cleanList">
+		SELECT tc.clean_id, clean_name, regist_date,
+			   mt.type_code, mt.type_name,
+			   COUNT(tm.memo_id) memo_cnt
+		  FROM t_clean tc
+			   INNER JOIN m_type mt
+					 ON tc.type_code = mt.type_code
+				LEFT OUTER JOIN t_memo tm
+							 ON tc.clean_id = tm.clean_id
+	  GROUP BY tc.clean_id, clean_name, regist_date,
+			   mt.type_code, mt.type_name
+	  ORDER BY tc.clean_id
+	</select>
+
+	<!-- **************** 登録 **************** -->
+	<insert id="insert">
+		INSERT INTO t_clean ( clean_name, regist_date, type_code, remarks )
+		VALUES ( #{clean.cleanName}, #{clean.registDate},
+				 #{clean.typeCode}, #{clean.remarks} )
+	</insert>
+
+
+</mapper>
