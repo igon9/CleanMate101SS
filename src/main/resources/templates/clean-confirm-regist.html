@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Clean登録確認</title>
+<link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+		
+<h2>Clean登録確認</h2>
+
+<table class="detail-table" th:object="${cleanRegistForm}">
+	<tr>
+		<td class="guide">【Clean名】</td>
+		<td th:text="*{cleanName}"></td>
+	</tr>
+	<tr>
+		<td class="guide">【登録日】</td>
+		<td th:text="*{registDate}"></td>
+	</tr>
+	<tr>
+		<td class="guide">【タイプ】</td>
+		<td th:text="*{typeCode}"></td>
+	</tr>
+	<tr>
+		<td class="guide">【備考】</td>
+		<td th:text="*{remarks}"></td>
+	</tr>
+</table>
+<br>
+
+<form th:action="@{/clean-confirm-regist}" method="POST" 
+		th:object="${cleanRegistForm}">
+    <input type="hidden" th:field="*{cleanName}">
+    <input type="hidden" th:field="*{registDate}">
+    <input type="hidden" th:field="*{typeCode}">
+    <input type="hidden" th:field="*{remarks}">
+    <input type="submit" value="登録実行" class="btn">
+</form>
+
+<form th:action="@{/clean-show-regist}" method="POST"
+		th:object="${cleanRegistForm}">
+    <input type="hidden" th:field="*{cleanName}">
+    <input type="hidden" th:field="*{registDate}">
+    <input type="hidden" th:field="*{typeCode}">
+    <input type="hidden" th:field="*{remarks}">
+   	<input type="submit" value="もどる" class="btn">
+</form>
+
+</body>
+</html>
